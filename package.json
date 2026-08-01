@@ -1,0 +1,21 @@
+{
+  "name": "cicd-demo-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Archesus/CICD-app-repo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Archesus/CICD-app-repo/issues"
+  },
+  "homepage": "https://github.com/Archesus/CICD-app-repo#readme"
+}
