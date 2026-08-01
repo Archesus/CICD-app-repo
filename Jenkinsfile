@@ -38,21 +38,25 @@ pipeline {
             }
         }
 
-        stage('Update Manifests Repo') {
-            steps {
-                sshagent(['github-deploy-key']) {
-                    sh """
-                        rm -rf manifests-repo
-                        git clone ${MANIFESTS_REPO} manifests-repo
-                        cd manifests-repo
-                        sed -i "s|image:.*|image: ${ECR_REPO}:${IMAGE_TAG}|" deployment.yaml
-                        git config user.email "jenkins@ci.local"
-                        git config user.name "Jenkins CI"
-                        git commit -am "Deploy image ${IMAGE_TAG}"
-                        git push origin main
-                    """
-                }
-            }
+stage('Update Manifests Repo') {
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'github-pat',
+            usernameVariable: 'GIT_USER',
+            passwordVariable: 'GIT_PAT'
+        )]) {
+            sh """
+                rm -rf manifests-repo
+                git clone https://\${GIT_USER}:\${GIT_PAT}git@github.com:Archesus/CICD-manifests-repo.git manifests-repo
+                cd manifests-repo
+                sed -i "s|image:.*|image: ${ECR_REPO}:${IMAGE_TAG}|" deployment.yaml
+                git config user.email "jenkins@ci.local"
+                git config user.name "Jenkins CI"
+                git commit -am "Deploy image ${IMAGE_TAG}"
+                git push origin main
+            """
         }
+    }
+}
     }
 }
