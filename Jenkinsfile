@@ -5,7 +5,7 @@ pipeline {
         AWS_REGION     = 'ap-south-1'
         ECR_REPO       = '517724590804.dkr.ecr.ap-south-1.amazonaws.com/cicd-demo-app'
         IMAGE_TAG      = "${env.BUILD_NUMBER}"
-        MANIFESTS_REPO = 'git@github.com:Archesus/CICD-manifests-repo.git'
+        MANIFESTS_REPO = 'github.com/Archesus/CICD-manifests-repo.git'
     }
 
     stages {
@@ -47,7 +47,7 @@ stage('Update Manifests Repo') {
         )]) {
             sh """
                 rm -rf manifests-repo
-                git clone https://\${GIT_USER}:\${GIT_PAT}git@github.com:Archesus/CICD-manifests-repo.git manifests-repo
+                git clone https://${GIT_USER}:${GIT_PAT}@${MANIFESTS_REPO} manifests-repo
                 cd manifests-repo
                 sed -i "s|image:.*|image: ${ECR_REPO}:${IMAGE_TAG}|" deployment.yaml
                 git config user.email "jenkins@ci.local"
